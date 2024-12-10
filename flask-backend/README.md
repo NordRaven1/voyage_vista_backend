@@ -36,9 +36,9 @@ pipenv shell
 
 При работе на Linux системах возможна ошибка при установке библиотеки psycopg2
 
-Необходимо установить библиотеку libpq-dev. Для примера, на Ubuntu:
+Необходимо установить дополнительные библиотеки. Для примера, на Ubuntu:
 ```bash
-sudo apt install libpq-dev
+sudo apt install python3-dev libpq-dev
 ```
 Все зависимости содержатся в requirements.txt или Pipfile в папке flask-backend
 
@@ -62,15 +62,19 @@ sudo apt install libpq-dev
 
 ## Работа с контейнером БД проекта
 
-Для данного проекта создан архив "voyage-vista-database.tar" с пустой базой данных Postgre
+Для данного проекта создан репозиторий на Docker Hub с настроенной базой данных и сервером Postgre
 
-Для загрузки образа из архива необходимо прописать:
+Для загрузки образа из хаба необходимо прописать:
 ```bash
-sudo docker load -i voyage-vista-database.tar
+sudo docker pull nordraven/voyage-vista:latest
 ```
-Запуск контейнера:
+Создание и запуск контейнера:
 ```bash
-sudo docker run --name voyage-vista-db --network host -e POSTGRES_PASSWORD=1234 -d -p 5432:5432 voyage-vista-database
+sudo docker run --name voyage-vista-db --network host -e POSTGRES_PASSWORD=1234 -d -p 5432:5432 nordraven/voyage-vista:latest
+```
+Для последующих запусков контейнера:
+```bash
+sudo docker start voyage-vista-db
 ```
 Подключение к консоли Postgresql сервера:
 ```bash
@@ -87,8 +91,30 @@ sudo docker exec -it voyage-vista-db psql -U postgres
 flask --app run.py db upgrade
 ```
 
+Для отката на одну миграцию назад можно прописать:
+```bash
+flask --app run.py db downgrade
+```
+
 ## Запуск проекта
 
 Файлом для запуска проекта является run.py
 
 
+## Документация по backend части проекта
+
+Интерактивная ERD диаграмма базы данных с комментариями:
+- https://drawsql.app/teams/voyage-vista/diagrams/voyage-vista-database
+
+Swagger-документация по API-путям проекта доступна после запуска сервера по адресу:
+- http://127.0.0.1:8000/apidocs
+
+## Особенности тестовых данных
+
+В тестовых данных, которые добавляются с выполнением последней миграции:
+- Пароль для пользователя user - 1111
+- Пароль для пользователя moderator - 2222
+- Пароль для пользователя admin - admin
+
+Так как картинки, в отличие от данных в БД, не могут добавляться и удаляться с каждым воспроизведением миграции, 
+необходимо самостоятельно очистить папку `/flask-backend/webapp/cover_images`, когда тестовые обложки перестанут быть нужны
