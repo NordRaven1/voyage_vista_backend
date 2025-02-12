@@ -28,22 +28,6 @@ from webapp.schemas.TourSchema import TourSchema
 tours_bp = Blueprint("tours", __name__)
 
 
-@tours_bp.route("/categories", methods=["GET"])
-@swag_from("swagger_definitions/show_categories.yaml")
-def show_categories():
-    """
-       Возвращает все категории для туров
-       ---
-       """
-
-    categories = Category.query.all()
-    categories_schema = CategorySchema(many=True)
-    categories_data = categories_schema.dump(categories)
-
-    return jsonify({"success": True,
-                    "categories": categories_data}), 200
-
-
 @tours_bp.route("/special_offers", methods=["GET"])
 @swag_from("swagger_definitions/show_tours_with_discounts.yaml")
 def show_tours_with_discounts():

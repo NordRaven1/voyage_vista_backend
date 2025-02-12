@@ -1,26 +1,26 @@
-Возвращает все категории туров для слайдера на главной
+Возвращает все категории для туров
 ---
 responses:
   200:
     description: Вернул все категории
     schema:
-        type: object
-        properties:
-          success:
-            type: boolean
-            description: Показатель успеха/неуспеха
-          categories:
-              type: array
-              items:
-                $ref: '#/definitions/Category'
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Показатель успеха/неуспеха
+        categories:
+          type: array
+          items:
+            $ref: '#/definitions/Category'
     examples:
-        application/json:
-          success: true
-          categories:
-              - category_id: "e8c7c3d4-e23a-4b91-b770-1b884bfc3fda"
-                category_title: "Приключения"
-                category_description: "Описание приключений"
-                category_image: "flask-backend/webapp/cover_images/e8c7c3d4-e23a-4b91-b770-1b884bfc3fda.png"
+      application/json:
+        success: true
+        categories:
+          - category_id: "e8c7c3d4-e23a-4b91-b770-1b884bfc3fda"
+            category_title: "Приключения"
+            category_description: "Описание приключений"
+            category_image: "flask-backend/webapp/cover_images/e8c7c3d4-e23a-4b91-b770-1b884bfc3fda.png"
 
 definitions:
   Review:
